@@ -159,49 +159,8 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <% if(guild.ranks.length < 1){ %>
-                            <p><%= translate("dashboard:ROLE_REWARDS_EMPTY", { prefix: guild.prefix }) %></p>
-                        <% } else { %>
-                            <table class="table table-bordered">
-                                    <tr>
-                                        <th style="width: 10px">#</th>
-                                        <th><%= translate("common:ROLE") %></th>
-                                        <th style="width: 40px"><%= translate("common:INVITES") %></th>
-                                        </tr>
-                                    <tr>
-                                <% guild.ranks.filter((rank) => guild.roles.find((r) => r.id === rank.roleID)).sort((a,b) => b.inviteCount - a.inviteCount).forEach((rank, index) => { %>
-                                    <tr>
-                                        <td><%= ++index %>.</td>
-                                        <td><font color="<%= guild.roles.find((r) => r.id === rank.roleID).hexColor %>"><strong>@<%= guild.roles.find((r) => r.id === rank.roleID).name %></strong></font></td>
-                                        <td><span class="badge bg-red"><%= rank.inviteCount %></span></td>
-                                    </tr>
-                                <% }); %>
-                            </table>
-                        <% } %>
+                        <%= translate("misc:RANKS_TOS_LINKED") %>
                     </div>
-                </div>
-                <div class="box box-warning">
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><%= translate("dashboard:ROLE_REWARDS_BEHAVIOR") %></h3>
-                    </div>
-                    <!-- /.box-header -->
-                    <form role="form" action="/manage/<%= guild.id %>/ranks" method="POST">
-                        <div class="box-body">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="keep-ranks" <% if (guild.keepRanks) { %>checked<% } %>> <%= translate('dashboard:ROLE_REWARDS_BEHAVIOR_KEEP_RANKS') %>
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="stacked-ranks" <% if (!guild.stackedRanks) { %>checked<% } %>> <%= translate('dashboard:ROLE_REWARDS_BEHAVIOR_STACKED_RANKS') %>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="box-footer">
-                            <button type="submit" class="btn btn-primary"><%= translate("common:UPDATE") %></button>
-                        </div>
-                    </form>
                 </div>
             </div>
             <div class="col-md-6">

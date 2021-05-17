@@ -12,17 +12,10 @@ module.exports = class extends Command {
     }
 
     async run (message) {
+        
+        return message.channel.send(message.translate("misc:RANKS_TOS", {
+            link: this.client.config.discord
+        }));
 
-        if (!message.guild.settings.keepRanks){
-            await this.client.database.updateGuildSetting(message.guild.id, {
-                keepRanks: true
-            });
-            return message.success("config/set-keep-ranks:SUCCESS_ENABLED");
-        } else {
-            await this.client.database.updateGuildSetting(message.guild.id, {
-                keepRanks: false
-            });
-            return message.success("config/set-keep-ranks:SUCCESS_DISABLED");
-        }
     }
 };

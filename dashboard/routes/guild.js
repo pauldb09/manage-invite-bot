@@ -92,29 +92,6 @@ router.post("/:serverID/:form", CheckAuth, async (req, res) => {
         }
     }
 
-    if (req.params.form === "ranks") {
-        const stackedRanks = !Object.prototype.hasOwnProperty.call(data, "stacked-ranks");
-        const keepRanks = Object.prototype.hasOwnProperty.call(data, "keep-ranks");
-        if (stackedRanks && !guildSettings.stackedRanks) {
-            await req.client.database.updateGuildSetting(req.params.serverID, {
-                stackedRanks: true
-            });
-        } else if (!stackedRanks && guildSettings.stackedRanks) {
-            await req.client.database.updateGuildSetting(req.params.serverID, {
-                stackedRanks: false
-            });
-        }
-        if (keepRanks && !guildSettings.keepRanks) {
-            await req.client.database.updateGuildSetting(req.params.serverID, {
-                keepRanks: true
-            });
-        } else if (!keepRanks && guildSettings.keepRanks) {
-            await req.client.database.updateGuildSetting(req.params.serverID, {
-                keepRanks: false
-            });
-        }
-    }
-
     if (req.params.form === "joinDM"){
         const enable = Object.prototype.hasOwnProperty.call(data, "enable");
         const update = Object.prototype.hasOwnProperty.call(data, "update");

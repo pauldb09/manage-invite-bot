@@ -12,16 +12,10 @@ module.exports = class extends Command {
     }
 
     async run (message) {
-        if (!message.guild.settings.stackedRanks){
-            await this.client.database.updateGuildSetting(message.guild.id, {
-                stackedRanks: true
-            });
-            return message.success("config/set-stacked-ranks:SUCCESS_ENABLED");
-        } else {
-            await this.client.database.updateGuildSetting(message.guild.id, {
-                stackedRanks: false
-            });
-            return message.success("config/set-stacked-ranks:SUCCESS_DISABLED");
-        }
+
+        return message.channel.send(message.translate("misc:RANKS_TOS", {
+            link: this.client.config.discord
+        }));
+
     }
 };

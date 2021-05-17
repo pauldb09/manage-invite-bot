@@ -20,5 +20,7 @@
   "NEED_UPGRADE": "{{emote}} | Hello, **{{username}}**! Your server need to be upgraded to use **ManageInvite**! We have managed to reduce latency to create a fast and powerful bot for servers that want a 100% reliable bot. To get more informations, you can join the support server ( {{discord}} ) or connect to the dashboard **<https://dash.manage-invite.xyz>**!",
   "PLEASE_WAIT": "{{loading}} | Please wait...",
   "WRONG_CHANNEL": "Commands are not allowed in this channel, please use {{channel}} instead.",
-  "COOLDOWNED": "{{emote}} | Please wait **{{remainingSeconds}} seconds** and try again!"
+  "COOLDOWNED": "{{emote}} | Please wait **{{remainingSeconds}} seconds** and try again!",
+  "RANKS_TOS": "Ranks rewards are **now forbidden by Discord**. We had to remove this feature from our bot, and all the bots still offering this feature are illegal and may be deleted at any moment. Hopefully, invite logging, leaderboards, invite commands, etc. are still available! If you need more information, like how to get a replacement for this feature, feel free to join our **support server**, we will help you there. {{link}}",
+  "RANKS_TOS_LINKED": "Ranks rewards are now forbidden by Discord. If you need more information, like how to get a replacement for this feature, join our <a href=\"https://discord.gg/N99PJgE\" target=\"_blank\">support server</a>!"
 }

@@ -281,8 +281,6 @@ module.exports = class DatabaseHandler {
             storageID: redisData.storageID,
             language: redisData.language,
             prefix: redisData.prefix,
-            keepRanks: redisData.keepRanks === "true",
-            stackedRanks: redisData.stackedRanks === "true",
             cmdChannel: redisData.cmdChannel,
             fakeThreshold: redisData.fakeThreshold
         };
@@ -312,8 +310,6 @@ module.exports = class DatabaseHandler {
             storageID: rows[0].guild_storage_id,
             language: rows[0].guild_language,
             prefix: rows[0].guild_prefix,
-            keepRanks: rows[0].guild_keep_ranks,
-            stackedRanks: rows[0].guild_stacked_ranks,
             cmdChannel: rows[0].guild_cmd_channel,
             fakeThreshold: rows[0].guild_fake_threshold
         };
@@ -337,70 +333,6 @@ module.exports = class DatabaseHandler {
                 WHERE guild_id = $2;
             `, newSettingData[setting], guildID)
         ]);
-    }
-
-    /**
-     * Add a new guild rank
-     */
-    addGuildRank (guildID, roleID, inviteCount) {
-        return Promise.all([
-            this.redis.getString(`guild_ranks_${guildID}`, { json: true }).then((ranks) => {
-                if (!ranks) return;
-                const newRanks = [
-                    ...ranks,
-                    {
-                        guildID,
-                        roleID,
-                        inviteCount
-                    }
-                ];
-                return this.redis.setString(`guild_ranks_${guildID}`, JSON.stringify(newRanks));
-            }),
-            this.postgres.query(`
-                INSERT INTO guild_ranks
-                (guild_id, role_id, invite_count) VALUES
-                ($1, $2, $3)
-            `, guildID, roleID, inviteCount)
-        ]);
-    }
-
-    /**
-     * Remove an existing guild rank
-     */
-    async removeGuildRank (guildID, roleID) {
-        return Promise.all([
-            this.redis.getString(`guild_ranks_${guildID}`, { json: true }).then((ranks) => {
-                if (!ranks) return;
-                const newRanks = ranks.filter((rank) => rank.roleID !== roleID);
-                return this.redis.setString(`guild_ranks_${guildID}`, JSON.stringify(newRanks));
-            }),
-            this.postgres.query(`
-                DELETE FROM guild_ranks
-                WHERE role_id = $1
-                AND guild_id = $2;
-            `, roleID, guildID)
-        ]);
-    }
-
-    /**
-     * Get the ranks of a guild
-     */
-    async fetchGuildRanks (guildID) {
-        const redisData = await this.redis.getString(`guild_ranks_${guildID}`, { json: true });
-        if (redisData) return redisData;
-
-        const { rows } = await this.postgres.query(`
-            SELECT *
-            FROM guild_ranks
-            WHERE guild_id = $1;
-        `, guildID);
-        const formattedRanks = rows.map((row) => ({
-            guildID: row.guild_id,
-            roleID: row.role_id,
-            inviteCount: row.invite_count
-        }));
-        this.redis.setString(`guild_ranks_${guildID}`, JSON.stringify(formattedRanks));
-        return formattedRanks;
     }
 
     /**

@@ -50,8 +50,6 @@ You can use `+config` to show your server global config.
 ### 🔑 Admin commands
 
 ```
-+set-stacked-ranks   Whether members keep all their roles or only the highest one
-+set-keep-ranks      Whether members keep their roles when they lose invites
 +blacklist           Add or remove a user to the blacklist
 ```
 

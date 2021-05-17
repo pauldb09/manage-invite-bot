@@ -25,12 +25,11 @@ async function fetchGuild (guildID, client, translate){
     }
     `);
     const guild = results.find((g) => g);
-    const [guildSettings, guildSubscriptions, guildPlugins, guildSubscriptionStatus, guildRanks] = await Promise.all([
+    const [guildSettings, guildSubscriptions, guildPlugins, guildSubscriptionStatus] = await Promise.all([
         client.database.fetchGuildSettings(guild.id),
         client.database.fetchGuildSubscriptions(guild.id),
         client.database.fetchGuildPlugins(guild.id),
-        client.database.fetchGuildSubscriptionStatus(guild.id),
-        client.database.fetchGuildRanks(guild.id)
+        client.database.fetchGuildSubscriptionStatus(guild.id)
     ]);
     const isPremium = guildSubscriptions.some((sub) => new Date(sub.expiresAt).getTime() > (Date.now()-3*24*60*60*1000));
     const premiumExpiresAt = guildSubscriptions.sort((subA, subB) => new Date(subB.expiresAt).getTime() - new Date(subA.expiresAt).getTime())[0].expiresAt;
@@ -49,7 +48,7 @@ async function fetchGuild (guildID, client, translate){
     guildPlugins.forEach((p) => {
         formattedGuildPlugins[p.pluginName] = p.pluginData;
     });
-    return { ...guild, ...guildSettings, ...additionalData, ...formattedGuildPlugins, ranks: guildRanks, isPremium };
+    return { ...guild, ...guildSettings, ...additionalData, ...formattedGuildPlugins, isPremium };
 }
 
 /**
